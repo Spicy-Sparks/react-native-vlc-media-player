@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, requireNativeComponent, View, Platform } from 'react-native';
+import { StyleSheet, requireNativeComponent, View, Image, Platform } from 'react-native';
 import PropTypes from 'prop-types';
-import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 
 export default class VLCPlayer extends Component {
 	constructor(props, context) {
@@ -136,7 +135,9 @@ export default class VLCPlayer extends Component {
 	}
 
 	render() {
-		const source = resolveAssetSource({ ...this.props.source }) || {};
+		let source = {
+      ...Image.resolveAssetSource(this.props.source) || {}
+    }
 		const uri = source.uri || '';
 		let isNetwork = !!(uri && uri.match(/^https?:/));
 		const isAsset = !!(uri && uri.match(/^(assets-library|file|content|ms-appx|ms-appdata):/));
