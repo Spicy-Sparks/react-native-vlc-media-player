@@ -6,6 +6,7 @@ export default class VLCPlayer extends Component {
 	constructor(props, context) {
 		super(props, context)
 		this.onLoadCalled = false
+		this.needToCallOnSeek = false
 		this.seek = this.seek.bind(this)
 		this.resume = this.resume.bind(this)
 		this.play = this.play.bind(this)
@@ -21,8 +22,10 @@ export default class VLCPlayer extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if(prevProps.source?.uri !== this.props.source?.uri)
+		if(prevProps.source?.uri !== this.props.source?.uri) {
 			this.onLoadCalled = false
+			this.needToCallOnSeek = false
+		}
 	}
 
 	static defaultProps = {
@@ -39,9 +42,7 @@ export default class VLCPlayer extends Component {
 
 	seek(pos) {
 		this.setNativeProps({ seek: pos })
-		this.props.onSeek && this.props.onSeek({
-			currentTime: pos
-		})
+		this.needToCallOnSeek = true
 	}
 
 	autoAspectRatio(isAuto) {
@@ -116,6 +117,10 @@ export default class VLCPlayer extends Component {
 			case 'TimeChanged':
 				this.props.onProgress && this.props.onProgress(event.nativeEvent)
 				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+				if(!this.needToCallOnSeek)
+					return
+				this.props.onSeek && this.props.onSeek(event.nativeEvent)
+				this.needToCallOnSeek = false
 				break
 			default:
 				this.props.onVideoStateChange && this.props.onVideoStateChange(event)
