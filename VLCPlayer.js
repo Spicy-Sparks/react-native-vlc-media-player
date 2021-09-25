@@ -184,7 +184,7 @@ export default class VLCPlayer extends Component {
 			onVideoStateChange: this._onVideoStateChange,
 			onSnapshot: this._onSnapshot,
 			onIsPlaying: this._onIsPlaying,
-			progressUpdateInterval: 250,
+			progressUpdateInterval: this.props.progressUpdateInterval || 250,
 		});
 
 		return <RCTVLCPlayer ref={this._assignRoot} {...nativeProps} />;
@@ -209,6 +209,7 @@ VLCPlayer.propTypes = {
 	volumeDown: PropTypes.number,
 	repeat: PropTypes.bool,
 	muted: PropTypes.bool,
+	progressUpdateInterval: PropTypes.number,
 
 	hwDecoderEnabled: PropTypes.number,
 	hwDecoderForced: PropTypes.number,
