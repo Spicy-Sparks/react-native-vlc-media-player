@@ -1,136 +1,146 @@
-import React, { Component } from 'react';
-import { StyleSheet, requireNativeComponent, View, Image, Platform } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import { StyleSheet, requireNativeComponent, View, Image, Platform } from 'react-native'
+import PropTypes from 'prop-types'
 
 export default class VLCPlayer extends Component {
 	constructor(props, context) {
-		super(props, context);
-		this.seek = this.seek.bind(this);
-		this.resume = this.resume.bind(this);
-		this.play = this.play.bind(this);
-		this.snapshot = this.snapshot.bind(this);
-		this._assignRoot = this._assignRoot.bind(this);
-		this._onProgress = this._onProgress.bind(this);
-		this._onLoadStart = this._onLoadStart.bind(this);
-		this._onSnapshot = this._onSnapshot.bind(this);
-		this._onIsPlaying = this._onIsPlaying.bind(this);
-		this._onVideoStateChange = this._onVideoStateChange.bind(this);
-		this.clear = this.clear.bind(this);
-		this.changeVideoAspectRatio = this.changeVideoAspectRatio.bind(this);
+		super(props, context)
+		this.onLoadCalled = false
+		this.seek = this.seek.bind(this)
+		this.resume = this.resume.bind(this)
+		this.play = this.play.bind(this)
+		this.snapshot = this.snapshot.bind(this)
+		this._assignRoot = this._assignRoot.bind(this)
+		this._onProgress = this._onProgress.bind(this)
+		this._onLoadStart = this._onLoadStart.bind(this)
+		this._onSnapshot = this._onSnapshot.bind(this)
+		this._onIsPlaying = this._onIsPlaying.bind(this)
+		this._onVideoStateChange = this._onVideoStateChange.bind(this)
+		this.clear = this.clear.bind(this)
+		this.changeVideoAspectRatio = this.changeVideoAspectRatio.bind(this)
+	}
+
+	componentDidUpdate(prevProps) {
+		if(prevProps.source?.uri !== this.props.source?.uri)
+			this.onLoadCalled = false
 	}
 
 	static defaultProps = {
 		autoplay: true,
-	};
+	}
 
 	setNativeProps(nativeProps) {
-		this._root.setNativeProps(nativeProps);
+		this._root.setNativeProps(nativeProps)
 	}
 
 	clear() {
-		this.setNativeProps({ clear: true });
+		this.setNativeProps({ clear: true })
 	}
 
 	seek(pos) {
-		this.setNativeProps({ seek: pos });
+		this.setNativeProps({ seek: pos })
 	}
 
 	autoAspectRatio(isAuto) {
-		this.setNativeProps({ autoAspectRatio: isAuto });
+		this.setNativeProps({ autoAspectRatio: isAuto })
 	}
 
 	changeVideoAspectRatio(ratio) {
-		this.setNativeProps({ videoAspectRatio: ratio });
+		this.setNativeProps({ videoAspectRatio: ratio })
 	}
 
 	play(paused) {
-		this.setNativeProps({ paused: paused });
+		this.setNativeProps({ paused: paused })
 	}
 
 	position(position) {
-		this.setNativeProps({ position: position });
+		this.setNativeProps({ position: position })
 	}
 
 	resume(isResume) {
-		this.setNativeProps({ resume: isResume });
+		this.setNativeProps({ resume: isResume })
 	}
 
 	snapshot(path) {
-		this.setNativeProps({ snapshotPath: path });
+		this.setNativeProps({ snapshotPath: path })
 	}
 
 	_assignRoot(component) {
-		this._root = component;
+		this._root = component
 	}
 
 	_onVideoStateChange(event) {
-		const type = event.nativeEvent.type;
+		const type = event.nativeEvent.type
 		if (__DEV__ && this.props.showLog) {
-			console.log(type, event.nativeEvent);
+			console.log(type, event.nativeEvent)
 		}
 		switch (type) {
 			case 'Opening':
-				this.props.onOpen && this.props.onOpen(event.nativeEvent);
-				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent);
-				break;
+				this.props.onOpen && this.props.onOpen(event.nativeEvent)
+				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+				break
 			case 'Playing':
-				this.props.onPlaying && this.props.onPlaying(event.nativeEvent);
-				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent);
-				break;
+				this.props.onPlaying && this.props.onPlaying(event.nativeEvent)
+				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+				break
 			case 'Paused':
-				this.props.onPaused && this.props.onPaused(event.nativeEvent);
-				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent);
-				break;
-			case 'Stoped':
-				this.props.onStopped && this.props.onStopped(event.nativeEvent);
-				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent);
-				break;
+				this.props.onPaused && this.props.onPaused(event.nativeEvent)
+				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+				break
+			case 'Stopped':
+				this.props.onStopped && this.props.onStopped(event.nativeEvent)
+				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+				break
 			case 'Ended':
-				this.props.onEnd && this.props.onEnd(event.nativeEvent);
-				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent);
-				break;
+				this.props.onEnded && this.props.onEnded(event.nativeEvent)
+				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+				break
 			case 'Buffering':
-				this.props.onBuffering && this.props.onBuffering(event.nativeEvent);
-				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent);
-				break;
+				this.props.onBuffering && this.props.onBuffering(event.nativeEvent)
+				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+				if((!event.nativeEvent.isPlaying && !event.nativeEvent.willPlay) || this.onLoadCalled || (event.nativeEvent.duration <= 0))
+		      return
+				this.props.onPlaying && this.props.onPlaying(event.nativeEvent)
+				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+				break
 			case 'onLoadStart':
-				this.props.onLoadStart && this.props.onLoadStart(event.nativeEvent);
-				break;
+				this.props.onLoadStart && this.props.onLoadStart(event.nativeEvent)
+				break
 			case 'Error':
-				this.props.onError && this.props.onError(event.nativeEvent);
-				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent);
-				break;
+				this.props.onError && this.props.onError(event.nativeEvent)
+				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+				break
 			case 'TimeChanged':
-				this.props.onProgress && this.props.onProgress(event.nativeEvent);
-				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent);
-				break;
+				this.props.onProgress && this.props.onProgress(event.nativeEvent)
+				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+				break
 			default:
-				this.props.onVideoStateChange && this.props.onVideoStateChange(event);
-				break;
+				this.props.onVideoStateChange && this.props.onVideoStateChange(event)
+				break
 		}
 	}
 
 	_onLoadStart(event) {
 		if (this.props.onLoadStart) {
-			this.props.onLoadStart(event.nativeEvent);
+			this.props.onLoadStart(event.nativeEvent)
 		}
 	}
 
 	_onProgress(event) {
 		if (this.props.onProgress) {
-			this.props.onProgress(event.nativeEvent);
+			this.props.onProgress(event.nativeEvent)
 		}
 	}
 
 	_onIsPlaying(event) {
 		if (this.props.onIsPlaying) {
-			this.props.onIsPlaying(event.nativeEvent);
+			this.props.onIsPlaying(event.nativeEvent)
 		}
 	}
 
 	_onSnapshot(event) {
 		if (this.props.onSnapshot) {
-			this.props.onSnapshot(event.nativeEvent);
+			this.props.onSnapshot(event.nativeEvent)
 		}
 	}
 
@@ -138,44 +148,42 @@ export default class VLCPlayer extends Component {
 		let source = {
       ...Image.resolveAssetSource(this.props.source) || {}
     }
-		const uri = source.uri || '';
-		let isNetwork = !!(uri && uri.match(/^https?:/));
-		const isAsset = !!(uri && uri.match(/^(assets-library|file|content|ms-appx|ms-appdata):/));
+		const uri = source.uri || ''
+		let isNetwork = !!(uri && uri.match(/^https?:/))
+		const isAsset = !!(uri && uri.match(/^(assets-library|file|content|ms-appx|ms-appdata):/))
 		if (!isAsset) {
-			isNetwork = true;
+			isNetwork = true
 		}
 		if (uri && uri.match(/^\//)) {
-			isNetwork = false;
+			isNetwork = false
 		}
 		if (Platform.OS === 'ios') {
-			source.mediaOptions = this.props.mediaOptions || {};
+			source.mediaOptions = this.props.mediaOptions || {}
 		} else {
-			let mediaOptionsList = [];
-			let mediaOptions = this.props.mediaOptions || {};
-			let keys = Object.keys(mediaOptions);
-			for (let i = 0; i < keys.length - 1; i++) {
-				let optionKey = keys[i];
-				let optionValue = mediaOptions[optionKey];
-				mediaOptionsList.push(optionKey + '=' + optionValue);
+			let mediaOptionsList = []
+			let mediaOptions = this.props.mediaOptions || {}
+			for(var optionKey in mediaOptions) {
+				let optionValue = mediaOptions[optionKey]
+				mediaOptionsList.push(optionKey + '=' + optionValue)
 			}
-			source.mediaOptions = mediaOptionsList;
+			source.mediaOptions = mediaOptionsList
 		}
-		source.initOptions = this.props.initOptions || [];
-		source.isNetwork = isNetwork;
-		source.autoplay = this.props.autoplay;
+		source.initOptions = this.props.initOptions || []
+		source.isNetwork = isNetwork
+		source.autoplay = this.props.autoplay
 		if (!isNaN(this.props.hwDecoderEnabled) && !isNaN(this.props.hwDecoderForced)) {
-			source.hwDecoderEnabled = this.props.hwDecoderEnabled;
-			source.hwDecoderForced = this.props.hwDecoderForced;
+			source.hwDecoderEnabled = this.props.hwDecoderEnabled
+			source.hwDecoderForced = this.props.hwDecoderForced
 		}
 		if (this.props.initType) {
-			source.initType = this.props.initType;
+			source.initType = this.props.initType
 		} else {
-			source.initType = 1;
+			source.initType = 1
 		}
 
 		//repeat the input media
-		//source.initOptions.push('--input-repeat=1000');
-		const nativeProps = Object.assign({}, this.props);
+		//source.initOptions.push('--input-repeat=1000')
+		const nativeProps = Object.assign({}, this.props)
 		Object.assign(nativeProps, {
 			style: [styles.base, nativeProps.style],
 			source: source,
@@ -185,9 +193,9 @@ export default class VLCPlayer extends Component {
 			onSnapshot: this._onSnapshot,
 			onIsPlaying: this._onIsPlaying,
 			progressUpdateInterval: this.props.progressUpdateInterval || 250,
-		});
+		})
 
-		return <RCTVLCPlayer ref={this._assignRoot} {...nativeProps} />;
+		return <RCTVLCPlayer ref={this._assignRoot} {...nativeProps} />
 	}
 }
 
@@ -240,12 +248,12 @@ VLCPlayer.propTypes = {
 	translateY: PropTypes.number,
 	rotation: PropTypes.number,
 	...View.propTypes,
-};
+}
 
 const styles = StyleSheet.create({
 	base: {
 		overflow: 'hidden',
 	},
-});
+})
 
-const RCTVLCPlayer = requireNativeComponent('RCTVLCPlayer', VLCPlayer);
+const RCTVLCPlayer = requireNativeComponent('RCTVLCPlayer', VLCPlayer)

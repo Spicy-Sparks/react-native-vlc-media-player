@@ -19,7 +19,7 @@ static NSString *const playbackRate = @"rate";
     /* Required to publish events */
     RCTEventDispatcher *_eventDispatcher;
     VLCMediaPlayer *_player;
-    
+
     NSDictionary * _source;
     BOOL _paused;
     BOOL _started;
@@ -29,19 +29,19 @@ static NSString *const playbackRate = @"rate";
 {
     if ((self = [super init])) {
         _eventDispatcher = eventDispatcher;
-        
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationWillResignActive:)
                                                      name:UIApplicationWillResignActiveNotification
                                                    object:nil];
-        
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationWillEnterForeground:)
                                                      name:UIApplicationWillEnterForegroundNotification
                                                    object:nil];
-        
+
     }
-    
+
     return self;
 }
 
@@ -167,7 +167,7 @@ static NSString *const playbackRate = @"rate";
             [_player setDrawable:self];
             _player.delegate = self;
             _player.scaleFactor = 0;
-            
+
             // [mediaDictonary setObject:@"1500" forKey:@"network-caching"];
             VLCMedia *media = nil;
             if(isNetWork){
@@ -302,7 +302,7 @@ static NSString *const playbackRate = @"rate";
                                               @"target": self.reactTag,
                                               @"isPlaying": [NSNumber numberWithBool: isPlaying],
                                               @"hasVideoOut": [NSNumber numberWithBool: hasVideoOut],
-                                              @"type": @"Stoped",
+                                              @"type": @"Stopped",
                                               @"videoWidth":[NSNumber numberWithInt:width],
                                               @"videoHeight":[NSNumber numberWithInt:height],
                                               @"willPlay":[NSNumber numberWithBool:willPlay],

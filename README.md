@@ -3,7 +3,7 @@
 A `<VLCPlayer>` component for react-native
 project was initially cloned from `react-native-yz-vlcplayer` And been actively maintaining it as the original repo is not been maintained by the owner.
 
-## New feature requests and bug fixes 
+## New feature requests and bug fixes
 
 At the moment I am a bit tied up with other work. As a matter of fact, I don't get much time to develop at all nowadays. But I am more than open to help anyone who wants's to contribute to this repo. And I will be sure to merge any fixes as soon as PR's come up. But if you need someone to fix issues that affect you till I get back to this(ETA Q3 2022), One option is to add a bounty to the following site https://www.bountysource.com/ someone will attend to it.
 
@@ -36,7 +36,7 @@ or
 `yarn add react-native-vlc-media-player`
 
 
-Run 
+Run
 
 `react-native link react-native-vlc-media-player`
 
@@ -48,7 +48,7 @@ Should work without any specific settings
 
 1. cd to ios
 2. run `pod init` (if only Podfile has not been generated in ios folder)
-3. add `pod 'MobileVLCKit', '3.3.10'` to pod file **(No need if you are running RN 0.61 and up)** 
+3. add `pod 'MobileVLCKit', '3.3.10'` to pod file **(No need if you are running RN 0.61 and up)**
 4. run `pod install` (you have to delete the app on the simulator/device and run `react-native run-ios` again)
 
 ## Optional (only for ios)
@@ -60,12 +60,12 @@ in root project select Build Settings ---> find Bitcode and select Enable Bitcod
 
 1. Android video Aspect ratio and other params do not work (Events are called but all events come through a single event onVideoStateChange but the JS side does not implement it.).
 
-## Got a few minutes to spare? Please help us to keep this repo up to date and simple to use. 
+## Got a few minutes to spare? Please help us to keep this repo up to date and simple to use.
 
 #### Our idea was to keep the repo simple, and people can use it with newer RN versions without any additional config.
 
 
-1. Get a fork of this repo and clone [VLC Media Player test](https://github.com/razorRun/react-native-vlc-media-player-test) 
+1. Get a fork of this repo and clone [VLC Media Player test](https://github.com/razorRun/react-native-vlc-media-player-test)
 2. Run it for ios and android locally using your fork, and do the changes. (remove this package using ```npm remove react-native-vlc-media-player``` and install the forked version from git hub ```npm i https://git-address-to-your-forked-repo```)  
 3. Verify your changes and make sure everything works on both platforms. (If you need a hand with testing I might be able to help as well)
 4. Send PR.
@@ -124,7 +124,7 @@ Prop | Description
 `onPlaying` | Called when media starts playing returns eg `{target: 9, duration: 99750, seekable: true}`
 `onProgress` | Callback containing `position` as a fraction, and `duration`, `currentTime` and `remainingTime` in seconds <br />&nbsp; ◦ &nbsp;eg `{  duration: 99750, position: 0.30, currentTime: 30154, remainingTime: -69594 }`
 `onPaused` | Called when media is paused
-`onStopped ` | Called when media is stoped
+`onStopped ` | Called when media is stopped
 `onBuffering ` | Called when media is buffering
 `onEnded` | Called when media playing ends
 `onError` | Called when an error occurs whilst attempting to play media
@@ -146,8 +146,8 @@ Video coding formats: Cinepak, Dirac, DV, H.263, H.264/MPEG-4 AVC, H.265/MPEG HE
 [Nghi-NV](https://github.com/Nghi-NV)
 [xuyuanzhou](https://github.com/xuyuanzhou)
 
-## sponsors 
+## sponsors
 
-Huge thanks to "[smartlife - one of the best custom home automation companies in new zealand](https://www.smartlife.nz/)" for helping me to keep this repo maintained 
+Huge thanks to "[smartlife - one of the best custom home automation companies in new zealand](https://www.smartlife.nz/)" for helping me to keep this repo maintained
 
 Author - Roshan Milinda -> [roshan.digital](https://roshan.digital)
