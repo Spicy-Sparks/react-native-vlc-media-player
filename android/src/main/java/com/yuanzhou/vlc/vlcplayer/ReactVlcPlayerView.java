@@ -22,15 +22,15 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.vlc.lib.RecordEvent;
+import com.vlc.lib.listener.util.VLCInstance;
+import com.vlc.lib.listener.util.VLCOptions;
 
-import org.videolan.libvlc.IVLCVout;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
-import org.videolan.vlc.RecordEvent;
-import org.videolan.vlc.util.LogUtils;
-import org.videolan.vlc.util.VLCInstance;
-import org.videolan.vlc.util.VLCOptions;
+import org.videolan.libvlc.interfaces.IVLCVout;
+
 import java.util.ArrayList;
 
 @SuppressLint("ViewConstructor")
@@ -77,12 +77,12 @@ class ReactVlcPlayerView extends TextureView implements
         this.eventEmitter = new VideoEventEmitter(context);
         this.themedReactContext = context;
         audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        
+
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels;
         screenWidth = dm.widthPixels;
         this.setSurfaceTextureListener(this);
-        
+
         this.addOnLayoutChangeListener(onLayoutChangeListener);
     }
 
@@ -327,7 +327,7 @@ class ReactVlcPlayerView extends TextureView implements
                 }
                 m.setHWDecoderEnabled(hmEnabled, hmForced);
             }
-            
+
             if(mediaOptions != null){
                 ArrayList options = mediaOptions.toArrayList();
                 for(int i=0; i < options.size() - 1 ; i++){
