@@ -78,6 +78,11 @@ export default class VLCPlayer extends Component {
 		if (__DEV__ && this.props.showLog) {
 			console.log(type, event.nativeEvent)
 		}
+		if((event.nativeEvent.isPlaying || event.nativeEvent.willPlay) && !this.onLoadCalled && (event.nativeEvent.duration > 0)) {
+			this.props.onPlaying && this.props.onPlaying(event.nativeEvent)
+			this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+			this.onLoadCalled = true
+		}
 		switch (type) {
 			case 'Opening':
 				this.props.onOpen && this.props.onOpen(event.nativeEvent)
@@ -102,10 +107,6 @@ export default class VLCPlayer extends Component {
 			case 'Buffering':
 				this.props.onBuffering && this.props.onBuffering(event.nativeEvent)
 				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
-				if((!event.nativeEvent.isPlaying && !event.nativeEvent.willPlay) || this.onLoadCalled || (event.nativeEvent.duration <= 0))
-		      return
-				this.props.onPlaying && this.props.onPlaying(event.nativeEvent)
-				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
 				break
 			case 'onLoadStart':
 				this.props.onLoadStart && this.props.onLoadStart(event.nativeEvent)
@@ -117,6 +118,10 @@ export default class VLCPlayer extends Component {
 			case 'TimeChanged':
 				this.props.onProgress && this.props.onProgress(event.nativeEvent)
 				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
+				if(this.needToCallOnSeek) {
+					this.props.onSeek && this.props.onSeek(event.nativeEvent)
+					this.needToCallOnSeek = false
+				}
 				break
 			default:
 				this.props.onVideoStateChange && this.props.onVideoStateChange(event)

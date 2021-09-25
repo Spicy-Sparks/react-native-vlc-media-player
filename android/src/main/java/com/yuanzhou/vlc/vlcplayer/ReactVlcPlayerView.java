@@ -26,10 +26,10 @@ import com.vlc.lib.RecordEvent;
 import com.vlc.lib.listener.util.VLCInstance;
 import com.vlc.lib.listener.util.VLCOptions;
 
+import org.videolan.libvlc.IVLCVout;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
-import org.videolan.libvlc.interfaces.IVLCVout;
 
 import java.util.ArrayList;
 
@@ -292,11 +292,12 @@ class ReactVlcPlayerView extends TextureView implements
                 }
             }
             // Create LibVLC
-            if(initType == 1){
+            /*if(initType == 1){
                 libvlc =  VLCInstance.get(getContext());
             }else{
                 libvlc =  new LibVLC(getContext(), cOptions);
-            }
+            }*/
+            libvlc =  new LibVLC(getContext(), cOptions);
             // Create media player
             mMediaPlayer = new MediaPlayer(libvlc);
             mMediaPlayer.setEventListener(mPlayerListener);
