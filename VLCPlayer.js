@@ -39,6 +39,9 @@ export default class VLCPlayer extends Component {
 
 	seek(pos) {
 		this.setNativeProps({ seek: pos })
+		this.props.onSeek && this.props.onSeek({
+			currentTime: pos
+		})
 	}
 
 	autoAspectRatio(isAuto) {
@@ -240,6 +243,7 @@ VLCPlayer.propTypes = {
 	onStopped: PropTypes.func,
 	onPlaying: PropTypes.func,
 	onPaused: PropTypes.func,
+	onSeek: PropTypes.func,
 
 	/* Required by react-native */
 	scaleX: PropTypes.number,
