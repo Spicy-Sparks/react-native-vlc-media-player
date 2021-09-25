@@ -41,6 +41,7 @@ export default class VLCPlayer extends Component {
 	}
 
 	seek(pos) {
+		console.log("seek")
 		this.setNativeProps({ seek: pos })
 		this.needToCallOnSeek = true
 	}
@@ -117,10 +118,7 @@ export default class VLCPlayer extends Component {
 			case 'TimeChanged':
 				this.props.onProgress && this.props.onProgress(event.nativeEvent)
 				this.props.onIsPlaying && this.props.onIsPlaying(event.nativeEvent)
-				if(!this.needToCallOnSeek)
-					return
-				this.props.onSeek && this.props.onSeek(event.nativeEvent)
-				this.needToCallOnSeek = false
+				console.log(this.needToCallOnSeek)
 				break
 			default:
 				this.props.onVideoStateChange && this.props.onVideoStateChange(event)
@@ -129,6 +127,8 @@ export default class VLCPlayer extends Component {
 	}
 
 	_onLoadStart(event) {
+		this.onLoadCalled = false
+		this.needToCallOnSeek = false
 		if (this.props.onLoadStart) {
 			this.props.onLoadStart(event.nativeEvent)
 		}
@@ -137,6 +137,10 @@ export default class VLCPlayer extends Component {
 	_onProgress(event) {
 		if (this.props.onProgress) {
 			this.props.onProgress(event.nativeEvent)
+		}
+		if(this.needToCallOnSeek) {
+			this.props.onSeek && this.props.onSeek(event.nativeEvent)
+			this.needToCallOnSeek = false
 		}
 	}
 
