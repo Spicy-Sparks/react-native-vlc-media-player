@@ -10,6 +10,6 @@ Pod::Spec.new do |s|
   s.source_files = 'ios/RCTVLCPlayer/*'
   s.platform     = :ios, "8.0"
   s.static_framework = true  
-  s.dependency 'React'
+  s.dependency 'React-Core'
   s.dependency 'MobileVLCKit'
 end
