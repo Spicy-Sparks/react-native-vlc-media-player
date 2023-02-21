@@ -26,10 +26,11 @@ import com.vlc.lib.RecordEvent;
 import com.vlc.lib.listener.util.VLCInstance;
 import com.vlc.lib.listener.util.VLCOptions;
 
-import org.videolan.libvlc.IVLCVout;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
+import org.videolan.libvlc.interfaces.IMedia;
+import org.videolan.libvlc.interfaces.IVLCVout;
 
 import java.util.ArrayList;
 
@@ -532,7 +533,7 @@ class ReactVlcPlayerView extends TextureView implements
                 case Media.Event.ParsedChanged:
                     Log.i(tag, "Media.Event.ParsedChanged  =" + event.getMetaId());
                     break;
-                case Media.Event.StateChanged:
+                case Media.Event.DurationChanged:
                     Log.i(tag, "StateChanged   =" + event.getMetaId());
                     break;
                 default:
