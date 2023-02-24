@@ -22,9 +22,9 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.vlc.lib.RecordEvent;
-import com.vlc.lib.listener.util.VLCInstance;
-import com.vlc.lib.listener.util.VLCOptions;
+// import com.vlc.lib.RecordEvent;
+// import com.vlc.lib.listener.util.VLCInstance;
+// import com.vlc.lib.listener.util.VLCOptions;
 
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
@@ -276,7 +276,7 @@ class ReactVlcPlayerView extends TextureView implements
             return;
         }
         try {
-            ArrayList<String> cOptions = VLCOptions.getLibOptions(getContext());
+            ArrayList<String> cOptions = new ArrayList(); // VLCOptions.getLibOptions(getContext());
             String uriString = srcMap.hasKey("uri") ? srcMap.getString("uri") : null;
             boolean isNetwork = srcMap.hasKey("isNetwork") ? srcMap.getBoolean("isNetwork") : false;
             boolean autoplay = srcMap.hasKey("autoplay") ? srcMap.getBoolean("autoplay") : true;
@@ -459,14 +459,14 @@ class ReactVlcPlayerView extends TextureView implements
      * @param path
      */
     public void doSnapshot(String path){
-        if(mMediaPlayer != null){
+        /*if(mMediaPlayer != null){
             int result = new RecordEvent().takeSnapshot(mMediaPlayer,path,0,0);
             if(result == 0){
                 eventEmitter.onSnapshot(1);
             }else{
                 eventEmitter.onSnapshot(0);
             }
-        }
+        }*/
 
     }
 
