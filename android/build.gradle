@@ -36,5 +36,5 @@ repositories {
 dependencies {
     implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'org.videolan.android:libvlc-all:3.6.0-eap5'
+    implementation 'org.videolan.android:libvlc-all:4.0.0-eap9'
 }
